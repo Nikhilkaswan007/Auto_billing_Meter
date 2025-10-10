@@ -1,0 +1,104 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-2">Energy Meter Dashboard</h1>
+        <p class="text-gray-600">Monitor and control your energy meters</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        
+        <!-- Total Meters Card -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-sm text-gray-500">Total Meters</h2>
+                <p class="text-4xl font-bold">{{ total_meters }}</p>
+            </div>
+        </div>
+
+        <!-- Active Meters Card -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-sm text-gray-500">Active Meters</h2>
+                <p class="text-4xl font-bold text-success">{{ active_meters }}</p>
+            </div>
+        </div>
+        
+
+        <!-- Consumption Card -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-sm text-gray-500">Last 24h Consumption</h2>
+                <p class="text-4xl font-bold text-primary">{{ total_consumption_24h }} kWh</p>
+            </div>
+        </div>
+        
+        
+    </div>
+    <!-- Time Range Filter -->
+    <div class="mb-6">
+        <form method="GET" action="">
+            <div class="flex items-center gap-4">
+                <label class="font-semibold">Time Range:</label>
+                <select name="time_range" class="select select-bordered" onchange="this.form.submit()">
+                    <option value="24h" {% if time_range == '24h' %}selected{% endif %}>Last 24 Hours</option>
+                    <option value="7d" {% if time_range == '7d' %}selected{% endif %}>Last 7 Days</option>
+                    <option value="30d" {% if time_range == '30d' %}selected{% endif %}>Last 30 Days</option>
+                    <option value="all" {% if time_range == 'all' %}selected{% endif %}>All Time</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <!-- Meters List -->
+    <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="card-title text-2xl">All Meters</h2>
+                <a href="{% url 'dashboard:add_meter' %}" class="btn btn-primary">+ Add New Meter</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                            <th>Consumption</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in meters_with_consumption %}
+                        <tr>
+                            <td class="font-semibold">{{ item.meter.name }}</td>
+                            <td>
+                                {% if item.meter.is_active %}
+                                    <span class="badge badge-success">Active</span>
+                                {% else %}
+                                    <span class="badge badge-error">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ item.meter.location|default:"N/A" }}</td>
+                            <td class="font-semibold">{{ item.consumption }} kWh</td>
+                            <td>
+                                <a href="{% url 'dashboard:meter_detail' item.meter.id %}" class="btn btn-sm btn-primary">View More</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-gray-500">No meters found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-base-200">
+    <div class="container mx-auto p-6">
+        <h1 class="text-4xl font-bold mb-6">Energy Meter API Documentation</h1>
+        
+        <div class="card bg-base-100 shadow-xl mb-6">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Add Reading Endpoint</h2>
+                
+                <div class="mb-4">
+                    <p class="font-semibold">Endpoint:</p>
+                    <code class="bg-gray-200 p-2 rounded">POST /api/reading/add/</code>
+                </div>
+
+                <div class="mb-4">
+                    <p class="font-semibold mb-2">Request Body (JSON):</p>
+                    <pre class="bg-gray-800 text-green-400 p-4 rounded overflow-x-auto">
+{
+    "device_id": "your_device_id",
+    "kilowatt_hours": 15.5,
+    "voltage": 240.0,
+    "ampere": 10.5
+}</pre>
+                </div>
+
+                <div class="mb-4">
+                    <p class="font-semibold mb-2">Success Response (200):</p>
+                    <pre class="bg-gray-800 text-green-400 p-4 rounded overflow-x-auto">
+{
+    "status": "success",
+    "message": "Reading saved successfully",
+    "reading_id": 1
+}</pre>
+                </div>
+
+                <div class="mb-4">
+                    <p class="font-semibold mb-2">Error Response (404 - Meter not found):</p>
+                    <pre class="bg-gray-800 text-red-400 p-4 rounded overflow-x-auto">
+{
+    "status": "error",
+    "message": "Meter not found"
+}</pre>
+                </div>
+
+                <div class="divider"></div>
+
+                <h3 class="text-xl font-bold mb-3">Python Example (Raspberry Pi)</h3>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto">
+import requests
+import json
+
+url = 'http://your-server-ip:8000/api/reading/add/'
+
+data = {
+    'device_id': 'METER_001',
+    'kilowatt_hours': 15.5,
+    'voltage': 240.0,
+    'ampere': 10.5
+}
+
+response = requests.post(url, json=data)
+print(response.json())</pre>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>Make sure the device_id exists in the database before sending readings!</span>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,196 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    
+    <!-- Back Button -->
+    <div class="mb-6">
+        <a href="{% url 'dashboard:home' %}" class="btn btn-ghost">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Meter Name Header -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-2">{{ meter.name }}</h1>
+        <div class="flex gap-2 items-center">
+            {% if meter.is_active %}
+                <span class="badge badge-success badge-lg">Active</span>
+            {% else %}
+                <span class="badge badge-error badge-lg">Inactive</span>
+            {% endif %}
+            <span class="text-gray-600">Device ID: {{ meter.device_id }}</span>
+        </div>
+    </div>
+
+    <!-- 24h Consumption Card -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title text-sm text-gray-500">Last 24h Consumption</h2>
+            <p class="text-4xl font-bold text-primary">{{ consumption_24h }} kWh</p>
+        </div>
+    </div>
+    <!-- Contact Information -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-4">Contact Information</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <p class="text-sm text-gray-500">Location</p>
+                    <p class="font-semibold">{{ meter.location|default:"Not provided" }}</p>
+                </div>
+                
+                <div>
+                    <p class="text-sm text-gray-500">Email</p>
+                    <p class="font-semibold">{{ meter.contact_email|default:"Not provided" }}</p>
+                </div>
+                
+                <div>
+                    <p class="text-sm text-gray-500">Phone</p>
+                    <p class="font-semibold">{{ meter.contact_phone|default:"Not provided" }}</p>
+                </div>
+                
+                <div>
+                    <p class="text-sm text-gray-500">Added On</p>
+                    <p class="font-semibold">{{ meter.created_at|date:"M d, Y" }}</p>
+                </div>
+            </div>
+            
+            {% if meter.description %}
+            <div class="mt-4">
+                <p class="text-sm text-gray-500">Description</p>
+                <p class="mt-1">{{ meter.description }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Meter Specifications -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-4">Specifications</h2>
+            
+            {% if meter.specification %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <p class="text-sm text-gray-500">Capacity</p>
+                    <p class="font-semibold">{{ meter.specification.capacity|default:"Not set" }}</p>
+                </div>
+                
+                <div>
+                    <p class="text-sm text-gray-500">Voltage</p>
+                    <p class="font-semibold">{{ meter.specification.voltage|default:"Not set" }}</p>
+                </div>
+                
+                <div>
+                    <p class="text-sm text-gray-500">Ampere</p>
+                    <p class="font-semibold">{{ meter.specification.ampere|default:"Not set" }}</p>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-gray-500">No specifications set for this meter</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Safety Limits -->
+    {% if meter.specification %}
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-4">Safety Limits</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Voltage Limits -->
+                <div>
+                    <h3 class="font-semibold text-lg mb-3">Voltage Limits</h3>
+                    <div class="space-y-2">
+                        <div>
+                            <p class="text-sm text-gray-500">Upper Limit</p>
+                            <p class="font-semibold">{{ meter.specification.voltage_upper_limit|default:"Not set" }} V</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Lower Limit</p>
+                            <p class="font-semibold">{{ meter.specification.voltage_lower_limit|default:"Not set" }} V</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ampere Limits -->
+                <div>
+                    <h3 class="font-semibold text-lg mb-3">Ampere Limits</h3>
+                    <div class="space-y-2">
+                        <div>
+                            <p class="text-sm text-gray-500">Upper Limit</p>
+                            <p class="font-semibold">{{ meter.specification.ampere_upper_limit|default:"Not set" }} A</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Lower Limit</p>
+                            <p class="font-semibold">{{ meter.specification.ampere_lower_limit|default:"Not set" }} A</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Remote Control -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-4">Remote Control</h2>
+            
+            <div class="flex items-center gap-4">
+                <p class="font-semibold">Meter Power:</p>
+                
+                {% if meter.is_active %}
+                    <button class="btn btn-error">Turn OFF</button>
+                    <span class="badge badge-success badge-lg">Currently ON</span>
+                {% else %}
+                    <button class="btn btn-success">Turn ON</button>
+                    <span class="badge badge-error badge-lg">Currently OFF</span>
+                {% endif %}
+            </div>
+            
+            <div class="alert alert-warning mt-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <span>Remote control will send command to the physical meter device</span>
+            </div>
+        </div>
+    </div>
+    <!-- Recent Readings -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-4">Recent Readings</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Energy (kWh)</th>
+                            <th>Voltage (V)</th>
+                            <th>Ampere (A)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reading in recent_readings %}
+                        <tr>
+                            <td>{{ reading.timestamp|date:"M d, Y H:i" }}</td>
+                            <td class="font-semibold">{{ reading.kilowatt_hours }}</td>
+                            <td>{{ reading.current_voltage|default:"N/A" }}</td>
+                            <td>{{ reading.current_ampere|default:"N/A" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center text-gray-500">No readings available</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

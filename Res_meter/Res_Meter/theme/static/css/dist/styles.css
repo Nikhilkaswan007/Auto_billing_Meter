@@ -1500,6 +1500,9 @@
     font-size: 1rem;
     padding-inline: calc(0.25rem * 3.5 - var(--border));
   }
+  .py-8 {
+    padding-block: calc(var(--spacing) * 8);
+  }
   .text-center {
     text-align: center;
   }
@@ -1610,9 +1613,17 @@
     --badge-color: var(--color-error);
     --badge-fg: var(--color-error-content);
   }
+  .badge-info {
+    --badge-color: var(--color-info);
+    --badge-fg: var(--color-info-content);
+  }
   .badge-success {
     --badge-color: var(--color-success);
     --badge-fg: var(--color-success-content);
+  }
+  .badge-warning {
+    --badge-color: var(--color-warning);
+    --badge-fg: var(--color-warning-content);
   }
   .btn-error {
     --btn-color: var(--color-error);

@@ -1,0 +1,82 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    
+    <!-- Back Button -->
+    <div class="mb-6">
+        <a href="{% url 'dashboard:meter_detail' meter.id %}" class="btn btn-ghost">
+            ← Back to Meter Details
+        </a>
+    </div>
+
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-2">Invoices for {{ meter.name }}</h1>
+        <p class="text-gray-600">View and manage all invoices for this meter</p>
+    </div>
+
+    <!-- Generate New Invoice Button -->
+    <div class="mb-6">
+        <a href="{% url 'billing:create_invoice' meter.id %}" class="btn btn-success btn-lg">
+            + Generate New Invoice
+        </a>
+    </div>
+
+    <!-- Invoices List -->
+    <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-4">Invoice History</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Invoice #</th>
+                            <th>Period</th>
+                            <th>Consumption (kWh)</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for invoice in invoices %}
+                        <tr>
+                            <td class="font-semibold">{{ invoice.invoice_number }}</td>
+                            <td>{{ invoice.billing_period_start|date:"M d" }} - {{ invoice.billing_period_end|date:"M d, Y" }}</td>
+                            <td>{{ invoice.total_kwh }} kWh</td>
+                            <td class="font-semibold">₹{{ invoice.total_amount }}</td>
+                            <td>
+                                {% if invoice.status == 'paid' %}
+                                    <span class="badge badge-success">Paid</span>
+                                {% elif invoice.status == 'sent' %}
+                                    <span class="badge badge-info">Sent</span>
+                                {% elif invoice.status == 'overdue' %}
+                                    <span class="badge badge-error">Overdue</span>
+                                {% else %}
+                                    <span class="badge badge-warning">Draft</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ invoice.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">View</button>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-gray-500 py-8">
+                                No invoices yet. Click "Generate New Invoice" to create one.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+{% endblock %}

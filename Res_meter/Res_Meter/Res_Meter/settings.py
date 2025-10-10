@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'theme',
     'meters',
     'dashboard',
-    'api'
+    'api',
+    'billing',
 
 ]
 

@@ -23,6 +23,7 @@ urlpatterns = [
     #path('', include('meters.urls')),
     path('', include('dashboard.urls')),
     path('api/', include('api.urls')),
+    path('billing/', include('billing.urls')),
     
 ]
 if settings.DEBUG:

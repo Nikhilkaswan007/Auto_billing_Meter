@@ -134,6 +134,25 @@
         </div>
     </div>
     {% endif %}
+    <!-- Billing Section -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="card-title text-2xl">Billing & Invoices</h2>
+                <a href="{% url 'billing:create_invoice' meter.id %}" class="btn btn-success">
+                    + Generate Invoice
+                </a>
+            </div>
+            
+            <p class="text-gray-600">Generate and manage invoices for this meter</p>
+            
+            <div class="mt-4">
+                <a href="{% url 'billing:meter_invoices' meter.id %}" class="btn btn-primary">
+                    View All Invoices
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- Remote Control -->
     <div class="card bg-base-100 shadow-xl mb-6">

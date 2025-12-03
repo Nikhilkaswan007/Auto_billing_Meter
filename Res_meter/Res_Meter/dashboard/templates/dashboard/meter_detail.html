@@ -159,24 +159,70 @@
         <div class="card-body">
             <h2 class="card-title text-2xl mb-4">Remote Control</h2>
             
-            <div class="flex items-center gap-4">
-                <p class="font-semibold">Meter Power:</p>
+            <form method="POST" action="{% url 'dashboard:toggle_meter' meter.id %}">
+                {% csrf_token %}
                 
-                {% if meter.is_active %}
-                    <button class="btn btn-error">Turn OFF</button>
-                    <span class="badge badge-success badge-lg">Currently ON</span>
-                {% else %}
-                    <button class="btn btn-success">Turn ON</button>
-                    <span class="badge badge-error badge-lg">Currently OFF</span>
-                {% endif %}
+                <div class="flex items-center gap-4 mb-4">
+                    <p class="font-semibold">Meter Power:</p>
+                    
+                    {% if meter.is_active %}
+                        <button type="submit" name="action" value="turn_off" class="btn btn-error">
+                            Turn OFF
+                        </button>
+                        <span class="badge badge-success badge-lg">Currently ON</span>
+                    {% else %}
+                        <button type="submit" name="action" value="turn_on" class="btn btn-success">
+                            Turn ON
+                        </button>
+                        <span class="badge badge-error badge-lg">Currently OFF</span>
+                    {% endif %}
+                </div>
+            </form>
+            
+            <div class="alert alert-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <span>Command will be sent to the physical meter device. The Raspberry Pi will check for pending commands.</span>
             </div>
             
-            <div class="alert alert-warning mt-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                <span>Remote control will send command to the physical meter device</span>
+            <!-- Recent Commands -->
+            <div class="mt-6">
+                <h3 class="font-semibold text-lg mb-3">Recent Commands</h3>
+                <div class="overflow-x-auto">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Command</th>
+                                <th>Status</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cmd in meter.commands.all|slice:":5" %}
+                            <tr>
+                                <td>{{ cmd.get_command_display }}</td>
+                                <td>
+                                    {% if cmd.status == 'executed' %}
+                                        <span class="badge badge-success badge-sm">Executed</span>
+                                    {% elif cmd.status == 'failed' %}
+                                        <span class="badge badge-error badge-sm">Failed</span>
+                                    {% else %}
+                                        <span class="badge badge-warning badge-sm">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ cmd.created_at|date:"M d, H:i" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center text-gray-500">No commands yet</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+    
     <!-- Recent Readings -->
     <div class="card bg-base-100 shadow-xl mb-6">
         <div class="card-body">

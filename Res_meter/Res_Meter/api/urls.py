@@ -5,5 +5,7 @@ app_name = 'api'
 
 urlpatterns = [
     path('reading/add/', views.add_reading, name='add_reading'),
+    path('commands/<str:device_id>/', views.get_pending_commands, name='get_commands'),
+    path('command/update/', views.update_command_status, name='update_command'),
     path('docs/', views.api_docs, name='docs'),
 ]

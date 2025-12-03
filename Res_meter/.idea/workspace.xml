@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="60ce5d0f-b4ba-48cc-9fe8-d440f4570db2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Res_Meter/Res_Meter/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/Res_Meter/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/Res_Meter/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/Res_Meter/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/api/templates/api/docs.html" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/api/templates/api/docs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/api/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/api/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/billing/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/billing/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/billing/templates/billing/invoice_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/billing/templates/billing/invoice_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/billing/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/billing/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/billing/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/billing/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/dashboard/templates/dashboard/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/dashboard/templates/dashboard/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/dashboard/templates/dashboard/meter_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/dashboard/templates/dashboard/meter_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/dashboard/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/dashboard/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/dashboard/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/dashboard/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/meters/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/meters/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/meters/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/meters/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Res_Meter/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/Res_Meter/theme/static/css/dist/styles.css" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="34ESjSnIenGZhmij0DfC9flXY9X" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/BOORA"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="60ce5d0f-b4ba-48cc-9fe8-d440f4570db2" name="Changes" comment="" />
+      <created>1760777372895</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1760777372895</updated>
+    </task>
+    <servers />
+  </component>
+</project>

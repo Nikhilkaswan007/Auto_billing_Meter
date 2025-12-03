@@ -7,5 +7,6 @@ urlpatterns = [
     path('', views.dashboard_home, name='home'),
     path('meter/add/', views.add_meter, name='add_meter'),
     path('meter/<int:meter_id>/', views.meter_detail, name='meter_detail'),
+    path('meter/<int:meter_id>/toggle/', views.toggle_meter, name='toggle_meter'),
     
 ]

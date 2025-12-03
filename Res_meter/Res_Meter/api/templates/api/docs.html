@@ -11,9 +11,10 @@
     <div class="container mx-auto p-6">
         <h1 class="text-4xl font-bold mb-6">Energy Meter API Documentation</h1>
         
+        <!-- 1. Add Reading -->
         <div class="card bg-base-100 shadow-xl mb-6">
             <div class="card-body">
-                <h2 class="card-title text-2xl mb-4">Add Reading Endpoint</h2>
+                <h2 class="card-title text-2xl mb-4">1. Add Reading Endpoint</h2>
                 
                 <div class="mb-4">
                     <p class="font-semibold">Endpoint:</p>
@@ -40,40 +41,184 @@
     "reading_id": 1
 }</pre>
                 </div>
-
-                <div class="mb-4">
-                    <p class="font-semibold mb-2">Error Response (404 - Meter not found):</p>
-                    <pre class="bg-gray-800 text-red-400 p-4 rounded overflow-x-auto">
-{
-    "status": "error",
-    "message": "Meter not found"
-}</pre>
-                </div>
-
-                <div class="divider"></div>
-
-                <h3 class="text-xl font-bold mb-3">Python Example (Raspberry Pi)</h3>
-                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto">
-import requests
-import json
-
-url = 'http://your-server-ip:8000/api/reading/add/'
-
-data = {
-    'device_id': 'METER_001',
-    'kilowatt_hours': 15.5,
-    'voltage': 240.0,
-    'ampere': 10.5
-}
-
-response = requests.post(url, json=data)
-print(response.json())</pre>
             </div>
         </div>
 
-        <div class="alert alert-info">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <span>Make sure the device_id exists in the database before sending readings!</span>
+        <!-- 2. Get Pending Commands -->
+        <div class="card bg-base-100 shadow-xl mb-6">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">2. Get Pending Commands</h2>
+                
+                <div class="mb-4">
+                    <p class="font-semibold">Endpoint:</p>
+                    <code class="bg-gray-200 p-2 rounded">GET /api/commands/&lt;device_id&gt;/</code>
+                </div>
+
+                <div class="mb-4">
+                    <p class="font-semibold mb-2">Example:</p>
+                    <code class="bg-gray-200 p-2 rounded">GET /api/commands/METER_001/</code>
+                </div>
+
+                <div class="mb-4">
+                    <p class="font-semibold mb-2">Success Response (200):</p>
+                    <pre class="bg-gray-800 text-green-400 p-4 rounded overflow-x-auto">
+{
+    "status": "success",
+    "device_id": "METER_001",
+    "commands": [
+        {
+            "command_id": 1,
+            "command": "turn_off",
+            "created_at": "2025-10-10T14:30:00"
+        }
+    ]
+}</pre>
+                </div>
+
+                <div class="alert alert-info">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>Commands can be: "turn_on" or "turn_off"</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Update Command Status -->
+        <div class="card bg-base-100 shadow-xl mb-6">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">3. Update Command Status</h2>
+                
+                <div class="mb-4">
+                    <p class="font-semibold">Endpoint:</p>
+                    <code class="bg-gray-200 p-2 rounded">POST /api/command/update/</code>
+                </div>
+
+                <div class="mb-4">
+                    <p class="font-semibold mb-2">Request Body (JSON):</p>
+                    <pre class="bg-gray-800 text-green-400 p-4 rounded overflow-x-auto">
+{
+    "command_id": 1,
+    "status": "executed"
+}</pre>
+                    <label class="label">
+                        <span class="label-text-alt">Status can be: "executed" or "failed"</span>
+                    </label>
+                </div>
+
+                <div class="mb-4">
+                    <p class="font-semibold mb-2">Success Response (200):</p>
+                    <pre class="bg-gray-800 text-green-400 p-4 rounded overflow-x-auto">
+{
+    "status": "success",
+    "message": "Command status updated",
+    "command_id": 1,
+    "new_status": "executed"
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complete Raspberry Pi Example -->
+        <div class="card bg-base-100 shadow-xl mb-6">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Complete Raspberry Pi Example</h2>
+                
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto">
+import requests
+import time
+import random
+
+# Configuration
+SERVER_URL = 'http://YOUR_SERVER_IP:8000'
+DEVICE_ID = 'YOUR_DEVICE_ID'
+
+def send_reading(kwh, voltage, ampere):
+    """Send meter reading to server"""
+    url = f'{SERVER_URL}/api/reading/add/'
+    data = {
+        'device_id': DEVICE_ID,
+        'kilowatt_hours': kwh,
+        'voltage': voltage,
+        'ampere': ampere
+    }
+    
+    try:
+        response = requests.post(url, json=data)
+        print(f"Reading sent: {response.json()}")
+        return True
+    except Exception as e:
+        print(f"Error sending reading: {e}")
+        return False
+
+def check_commands():
+    """Check for pending commands from server"""
+    url = f'{SERVER_URL}/api/commands/{DEVICE_ID}/'
+    
+    try:
+        response = requests.get(url)
+        data = response.json()
+        
+        if data['status'] == 'success':
+            commands = data['commands']
+            
+            for cmd in commands:
+                command_id = cmd['command_id']
+                command = cmd['command']
+                
+                print(f"Executing command: {command}")
+                
+                # Execute the command on hardware
+                if command == 'turn_off':
+                    # YOUR CODE: Turn off relay/meter here
+                    print("Turning meter OFF")
+                    success = True  # Replace with actual result
+                    
+                elif command == 'turn_on':
+                    # YOUR CODE: Turn on relay/meter here
+                    print("Turning meter ON")
+                    success = True  # Replace with actual result
+                
+                # Update command status
+                update_command(command_id, 'executed' if success else 'failed')
+                
+    except Exception as e:
+        print(f"Error checking commands: {e}")
+
+def update_command(command_id, status):
+    """Update command status on server"""
+    url = f'{SERVER_URL}/api/command/update/'
+    data = {
+        'command_id': command_id,
+        'status': status
+    }
+    
+    try:
+        response = requests.post(url, json=data)
+        print(f"Command updated: {response.json()}")
+    except Exception as e:
+        print(f"Error updating command: {e}")
+
+# Main loop
+while True:
+    # Read meter values (replace with actual sensor reading)
+    kwh = random.uniform(10, 50)  # Replace with actual kWh reading
+    voltage = random.uniform(220, 240)  # Replace with actual voltage
+    ampere = random.uniform(5, 15)  # Replace with actual ampere
+    
+    # Send reading
+    send_reading(kwh, voltage, ampere)
+    
+    # Check for commands
+    check_commands()
+    
+    # Wait 60 seconds before next cycle
+    time.sleep(60)
+</pre>
+
+                <div class="alert alert-warning mt-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                    <span><strong>Replace:</strong> YOUR_SERVER_IP with your computer's IP address and YOUR_DEVICE_ID with your meter's device ID</span>
+                </div>
+            </div>
         </div>
     </div>
 </body>

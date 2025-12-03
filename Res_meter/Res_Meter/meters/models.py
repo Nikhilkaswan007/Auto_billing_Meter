@@ -59,3 +59,28 @@ class MeterReading(models.Model):
     
     def __str__(self):
         return f"{self.meter.name} - {self.kilowatt_hours} kWh at {self.timestamp}"
+    
+class MeterCommand(models.Model):
+    COMMAND_CHOICES = [
+        ('turn_on', 'Turn ON'),
+        ('turn_off', 'Turn OFF'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('executed', 'Executed'),
+        ('failed', 'Failed'),
+    ]
+    
+    meter = models.ForeignKey(Meter, on_delete=models.CASCADE, related_name='commands')
+    command = models.CharField(max_length=20, choices=COMMAND_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    
+    created_at = models.DateTimeField(default=timezone.now)
+    executed_at = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.command} for {self.meter.name} - {self.status}"

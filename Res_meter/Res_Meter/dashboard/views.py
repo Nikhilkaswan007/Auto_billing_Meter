@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from meters.models import Meter, MeterReading
 from django.utils import timezone
@@ -5,7 +6,10 @@ from datetime import timedelta
 from django.db.models import Sum
 from django.shortcuts import redirect
 from meters.models import Meter, MeterSpecification
+from meters.models import MeterCommand
+from django.shortcuts import get_object_or_404
 
+@login_required
 def dashboard_home(request):
     # Get all meters
     meters = Meter.objects.all()
@@ -41,6 +45,7 @@ def dashboard_home(request):
     
     return render(request, 'dashboard/home.html', context)
 
+@login_required
 def meter_detail(request, meter_id):
     meter = Meter.objects.get(id=meter_id)
     
@@ -61,7 +66,7 @@ def meter_detail(request, meter_id):
     
     return render(request, 'dashboard/meter_detail.html', context)
 
-
+@login_required
 def dashboard_home(request):
     # Get time range from query parameter (default to 24h)
     time_range = request.GET.get('time_range', '24h')
@@ -119,6 +124,7 @@ def dashboard_home(request):
     
     return render(request, 'dashboard/home.html', context)
 
+@login_required
 def add_meter(request):
     if request.method == 'POST':
         # We'll handle form submission here (next step)
@@ -126,7 +132,9 @@ def add_meter(request):
     
     return render(request, 'dashboard/add_meter.html')
 
+@login_required
 def add_meter(request):
+    
     print("View called!")  # Debug
     print("Method:", request.method)  # Debug
     
@@ -188,3 +196,33 @@ def add_meter(request):
         return redirect('dashboard:home')
     
     return render(request, 'dashboard/add_meter.html')
+
+
+@login_required
+def toggle_meter(request, meter_id):
+    meter = get_object_or_404(Meter, id=meter_id)
+    
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        
+        if action == 'turn_off':
+            # Create turn off command
+            MeterCommand.objects.create(
+                meter=meter,
+                command='turn_off'
+            )
+            # Update meter status
+            meter.is_active = False
+            meter.save()
+            
+        elif action == 'turn_on':
+            # Create turn on command
+            MeterCommand.objects.create(
+                meter=meter,
+                command='turn_on'
+            )
+            # Update meter status
+            meter.is_active = True
+            meter.save()
+    
+    return redirect('dashboard:meter_detail', meter_id=meter.id)

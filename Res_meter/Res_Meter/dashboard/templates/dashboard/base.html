@@ -8,6 +8,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-base-200">
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 shadow-lg mb-6">
+        <div class="flex-1">
+            <a href="{% url 'dashboard:home' %}" class="btn btn-ghost normal-case text-xl">
+                Energy Meter System
+            </a>
+        </div>
+        <div class="flex-none">
+            {% if user.is_authenticated %}
+                <div class="dropdown dropdown-end">
+                    <label tabindex="0" class="btn btn-ghost">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-5 h-5 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span class="ml-2">{{ user.username }}</span>
+                    </label>
+                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
     {% block content %}
     {% endblock %}
 </body>

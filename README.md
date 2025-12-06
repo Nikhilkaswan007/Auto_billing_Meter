@@ -1,130 +1,126 @@
-# Auto Billing Meter
+# Auto Billing Meter ⚡
+**An Open-Source IoT-based Automatic Electricity Billing System**
 
-An IoT-based project for an automatic electricity billing system. This project uses a Raspberry Pi with a PZEM-004T energy meter to measure electricity consumption and a Django web application to manage users, visualize data, and automate billing.
-[![Watch the demo video](https://img.youtube.com/vi/1Th8oZYvSRI/0.jpg)](https://www.youtube.com/watch?v=1Th8oZYvSRI)
-## Features
+This project combines a **Raspberry Pi + PZEM-004T v3.0** energy meter with a **Django web dashboard** to monitor real-time electricity usage, manage multiple meters, generate professional PDF invoices automatically, and send them via email — all in one system.
 
-- **User Authentication:** Secure login and logout functionality for users and administrators.
-- **Real-time Data Dashboard:** A comprehensive dashboard to visualize real-time energy consumption data, including voltage, current, power, and total energy.
-- **Automated Billing:** Automatic generation of bills based on energy consumption.
-- **Meter Management:** Interface for administrators to add and manage meters.
-- **API:** A dedicated API to receive data from the IoT hardware.
+Perfect for landlords, small housing societies, sub-metering, or learning full-stack IoT!
 
-## Technology Stack
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=1Th8oZYvSRI">
+    <img src="https://img.youtube.com/vi/1Th8oZYvSRI/maxresdefault.jpg" 
+         alt="Click to Watch Full Demo Video" 
+         style="width:100%; max-width:850px; border-radius:16px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); cursor:pointer; transition:transform 0.3s;"
+         onmouseover="this.style.transform='scale(1.03)'"
+         onmouseout="this.style.transform='scale(1)'">
+  </a>
+  <br>
+  <sup><strong>▶ Click above to watch the full demo video (plays in lightbox)</strong></sup>
+</p>
 
-- **Backend:** Django
-- **Frontend:** HTML, CSS, JavaScript, Tailwind CSS
-- **Database:** SQLite 3
-- **Hardware:** Raspberry Pi, PZEM-004T v3.0 Energy Meter
-- **Libraries:** `django-tailwind`, `python-dotenv`, and more.
+## ✨ Features
+- Secure user authentication (login/logout)
+- Real-time dashboard with voltage, current, power & energy graphs
+- Automatic PDF invoice generation with custom rates
+- One-click email invoice delivery
+- Admin panel to add/manage meters
+- REST API for IoT hardware data push
+- Responsive design (works on mobile & desktop)
+- Remote power monitoring (foundation for future relay control)
 
-## Project Setup and Installation
+## 🛠 Technology Stack
+| Layer         | Technology                                      |
+|---------------|--------------------------------------------------|
+| Backend       | Django (Python)                                  |
+| Frontend      | HTML, Tailwind CSS, JavaScript                   |
+| Database      | SQLite (production-ready with PostgreSQL swap)   |
+| Hardware      | Raspberry Pi + PZEM-004T v3.0 Energy Monitor     |
+| Communication | HTTP POST API (from Pi → Django)                 |
+| Styling       | django-tailwind                                  |
 
-Follow these steps to get the project up and running on your local machine.
+## 🚀 Quick Start
 
 ### 1. Prerequisites
-
-Make sure you have the following installed:
-- Python 3.x
-- `pip` (Python package installer)
-- Node.js and `npm`
+- Python 3.8+
+- Node.js & npm
+- Git
 
 ### 2. Clone the Repository
-
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/yourusername/Auto_billing_Meter.git
 cd Auto_billing_Meter/Res_meter/Res_Meter
 ```
 
 ### 3. Backend Setup
-
-**a. Create and Activate Virtual Environment:**
-
-- For Windows:
-  ```bash
-  python -m venv .venv
-  .\.venv\Scripts\activate
-  ```
-- For macOS/Linux:
-  ```bash
-  python3 -m venv .venv
-  source .venv/bin/activate
-  ```
-
-**b. Install Python Dependencies:**
-
-_A `requirements.txt` file should be present in the root directory. If not, you may need to generate it based on the project's dependencies._
-
 ```bash
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate    # Linux/Mac
+# or
+.\.venv\Scripts\activate     # Windows
+
+# Install dependencies
 pip install -r requirements.txt
-```
 
-**c. Configure Environment Variables:**
+# Create .env file (see below)
+cp .env.example .env
 
-Create a `.env` file in the `Res_meter/Res_Meter` directory. You can copy the example below and replace the placeholder values.
-
-```
-# Django Project Environment Variables
-SECRET_KEY="your-django-secret-key"
-DEBUG=True
-ALLOWED_HOSTS=*
-
-# Email Configuration
-EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_HOST_USER=your-email@gmail.com
-EMAIL_HOST_PASSWORD="your-email-app-password"
-DEFAULT_FROM_EMAIL=your-email@gmail.com
-```
-
-**d. Run Database Migrations:**
-
-```bash
+# Apply migrations
 python manage.py migrate
-```
 
-**e. Create a Superuser:**
-
-To access the Django admin panel, create a superuser account.
-
-```bash
+# Create superuser
 python manage.py createsuperuser
 ```
-Follow the prompts to set up your username, email, and password.
 
-### 4. Frontend Setup
-
-Install the necessary Node.js packages for Tailwind CSS.
-
+### 4. Frontend (Tailwind CSS)
 ```bash
 npm install
 ```
 
-## Running the Application
+### 5. Run the Project
+Open **two terminals**:
 
-You need to run two commands in separate terminals.
-
-**1. Start the Django Development Server:**
-
+**Terminal 1** – Django server:
 ```bash
 python manage.py runserver
 ```
-The application will be available at `http://127.0.0.1:8000`.
 
-**2. Start the Tailwind CSS Watcher:**
-
-This command will watch for changes in your template files and automatically rebuild the CSS.
-
+**Terminal 2** – Tailwind watcher:
 ```bash
 python manage.py tailwind start
 ```
 
-## Hardware and API
+Visit: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-The `Demo Res_pi code/` directory contains the Python scripts designed to run on the Raspberry Pi. This code is responsible for reading data from the PZEM-004T sensor and sending it to the Django application's API.
+## ⚙ Hardware & IoT Integration
+The `Demo Res_pi code/` folder contains the Python script that runs on the **Raspberry Pi**:
+- Reads real-time data from PZEM-004T via serial
+- Sends voltage, current, power, and energy to Django API every few seconds
 
-## License
+> Future plan: Add relay control for remote disconnect (prepaid meter mode)
 
-This project is licensed under the terms of the license specified in the `LICENSE` file.
+## 📧 Email Configuration (.env)
+```env
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+DEFAULT_FROM_EMAIL=your-email@gmail.com
+```
+
+## 📄 License
+This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+<p align="center">
+  <br><br>
+  Made with ❤️ for the open-source and IoT community<br>
+  <strong>Star this repo if you found it useful! ⭐</strong>
+</p>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=1Th8oZYvSRI">📺 Watch Demo</a> • 
+  <a href="">📖 Documentation</a> • 
+  <a href="">🐞 Report Bug</a>
+</p>

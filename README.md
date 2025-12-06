@@ -1,7 +1,7 @@
 # Auto Billing Meter
 
 An IoT-based project for an automatic electricity billing system. This project uses a Raspberry Pi with a PZEM-004T energy meter to measure electricity consumption and a Django web application to manage users, visualize data, and automate billing.
-
+[![Watch the demo video](https://img.youtube.com/vi/1Th8oZYvSRI/0.jpg)](https://www.youtube.com/watch?v=1Th8oZYvSRI)
 ## Features
 
 - **User Authentication:** Secure login and logout functionality for users and administrators.

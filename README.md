@@ -108,6 +108,9 @@ EMAIL_HOST_PASSWORD=your-app-password
 DEFAULT_FROM_EMAIL=your-email@gmail.com
 ```
 
+**DOC page** –
+Visit: [http://127.0.0.1:8000/api/docs](http://127.0.0.1:8000/api/docs/)
+
 ## 📄 License
 This project is open-source and available under the [MIT License](LICENSE).
 
